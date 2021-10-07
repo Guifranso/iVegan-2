@@ -43,6 +43,20 @@ class Usuario {
         }
     }
 
+    autentica(usuario, res) {
+          
+        const sql = `SELECT * FROM Usuarios WHERE nome="${String(usuario.nome)}" and senhaHash="${String(usuario.senhaHash)}"`
+        console.log(sql)
+        conexao.query(sql, usuario, (erro, resultados) => {
+             if (resultados.length > 0){
+                res.status(201).json(resultados)
+            }else{
+                res.status(400)
+            }
+        })
+
+    }
+
     lista(res) {
         const sql = 'SELECT * FROM Usuarios'
 
@@ -51,6 +65,7 @@ class Usuario {
                 res.status(400).json(erro)
             } else {
                 res.status(200).json(resultados)
+                
             }
         })
     }

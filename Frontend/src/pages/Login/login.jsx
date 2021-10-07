@@ -3,69 +3,41 @@ import "./style.css";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { Redirect } from "react-router-dom";
+import api from "../../services/api";
 
 function Login() {
 
   const [ logado, setLogado ] = useState(false);
   console.log(logado)
   const [ sair, setSair ] = useState(false);
-  const userAux = { name: '', email: '', senha: '' };
+  const userAux = { nome: '', senhaHash: '' };
 
-  const handleLogin = (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault();
-    console.log(JSON.parse(localStorage.getItem('user')))
-    console.log(userAux)
-    if(userAux.senha === JSON.parse(localStorage.getItem('user')).senha) {
-      setLogado(true);
+    try{
+      const res = await api.post('/usuariosLoga',userAux)
+      console.log(res.data);
       localStorage.setItem('logado', JSON.stringify(true))
+      setLogado(true);
       setSair(true);
-      console.log(setSair)
-    } else {
-      console.log("Login ou senha incorretos")
+      console.log(res);
+    } catch(err){
+      console.log(err);
+      alert("deu ruim")
     }
   }
+
   if(sair === true) {
     return <Redirect to="/home"/>
   }
-
-  // const usuario = "guilherme"; 
-  // const senha = "123456";
-  // var usuarioValido = false;
-  // var senhaValida = false;
-  // function validaUsuario(event) {
-  //   console.log(event.target.value);
-  //   if(event.target.value == usuario) {
-  //     console.log("valido");
-  //     usuarioValido = true;
-  //   } else {
-  //     usuarioValido = false;
-  //   }
-  // }
-  // function validaSenha(event) {
-  //   console.log(event.target.value);
-  //   if(event.target.value == senha) {
-  //     console.log("valido");
-  //     senhaValida = true;
-  //   } else {
-  //     senhaValida = false;
-  //   }
-  // }
-  // function validaLogin(event) {
-  // event.preventDefault();
-  //   if(usuarioValido && senhaValida) {
-  //     console.log("logou");
-  //   } else {
-  //     console.log("falha no login");
-  //   }
-  // }
 
   return (
     <div className="login_body">
       <div className="login_main">
         <h1 className="login_title"> iVegan </h1>
         <form className="loginForm">
-          <input name="usuario" className="loginInput" onChange={(e) => {userAux.name = e.target.value}} placeholder="Usuário"></input>
-          <input name="senha" className="loginInput" onChange={(e) => {userAux.senha = e.target.value}} placeholder="Senha"></input>
+          <input name="usuario" className="loginInput" onChange={(e) => {userAux.nome = e.target.value}} placeholder="Usuário"></input>
+          <input name="senha" className="loginInput" onChange={(e) => {userAux.senhaHash = e.target.value}} placeholder="Senha"></input>
           <Link onClick={handleLogin} to="/home" className="login_entrar">
             Entrar
           </Link>

@@ -18,6 +18,13 @@ module.exports = app => {
        Usuario.adiciona(usuario, res)
     }) 
 
+    app.post('/usuariosLoga', (req, res) => {
+        console.log("deu post autentica")
+       const usuario = req.body
+
+       Usuario.autentica(usuario, res)
+    }) 
+
     app.patch('/usuarios/:id', (req, res) => {
         const id = parseInt(req.params.id)
         const valores = req.body

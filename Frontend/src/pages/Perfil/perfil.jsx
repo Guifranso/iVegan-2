@@ -8,7 +8,7 @@ import { useAuth } from '../../providers/auth';
 
 function Perfil() {
 
-  const { user, setUser } = useAuth();
+  const { user } = useAuth();
   console.log(user);
   const [ sair, setSair ] = useState(false);
   const userLogado = localStorage.getItem('logado')
@@ -41,9 +41,9 @@ function Perfil() {
             <th>Email:</th>
           </tr>
           <tr className="tabelaPerfil_data">
-            <td>Av Uirapuru 157</td>
+            <td>{user.endereco}</td>
             <td>Visa ****-****-157</td>
-            <td>Guilherme@gmail.com</td>
+            <td>{user.email }</td>
           </tr>
         </table>
 
